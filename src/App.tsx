@@ -1,11 +1,17 @@
+import { Route, Routes } from 'react-router';
 import './App.css';
-import { ProductList } from './features/products/ProductList';
+import { ProductListPage } from './features/products/pages/ProductListPage';
+import { Layout } from './shared/components/Layout';
+import { ProductDetails } from './features/products/components/ProductDetails';
 
 function App() {
   return (
-    <>
-      <ProductList />
-    </>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<ProductListPage />} />
+        <Route path="/recipes/:id" element={<ProductDetails />} />
+      </Route>
+    </Routes>
   );
 }
 
