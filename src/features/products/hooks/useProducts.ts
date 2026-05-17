@@ -2,9 +2,14 @@ import { getProducts } from '../../../lib/shopApi';
 import { useQuery } from '@tanstack/react-query';
 import type { Product } from '../model/product';
 
-export function useProducts() {
+type Filters = {
+  search?: string;
+  genre?: string;
+};
+
+export function useProducts(filters: Filters) {
   return useQuery<Product[]>({
-    queryKey: ['products'],
-    queryFn: getProducts,
+    queryKey: ['products', filters],
+    queryFn: () => getProducts(filters),
   });
 }

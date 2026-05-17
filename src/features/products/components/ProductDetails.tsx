@@ -1,10 +1,3 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import { useParams } from 'react-router';
 import { useProduct } from '../hooks/useProduct';
 
@@ -16,13 +9,20 @@ export function ProductDetails() {
   if (error || !product) return <p>Product not found</p>;
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{product.name}</CardTitle>
-        <CardDescription>{product.price_cents} ISK</CardDescription>
-      </CardHeader>
-      <img src={product.image_url} alt={product.name} />
-      <CardContent>{product.description}</CardContent>
-    </Card>
+    <div className="max-w-6xl max-auto p-6">
+      <div className="grid md:grid-cols-2 gap-10">
+        <div className="flex justify-center">
+          <img src={product.image_url} alt={product.name} />
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <h1 className="text-3xl font-bold">{product.name}</h1>
+          <p className="text-2xl font-semibold">
+            {product.price_cents.toLocaleString()} kr.
+          </p>
+          <p className="text-gray-700 leading-relaxed">{product.description}</p>
+        </div>
+      </div>
+    </div>
   );
 }
