@@ -1,9 +1,11 @@
 import { useParams } from 'react-router';
 import { useProduct } from '../hooks/useProduct';
+import { useCart } from '@/features/cart/hooks/useCart';
 
 export function ProductDetails() {
   const { id } = useParams<{ id: string }>();
   const { data: product, isLoading, error } = useProduct(id);
+  const { addToCart } = useCart();
 
   if (isLoading) return <p>Loading...</p>;
   if (error || !product) return <p>Product not found</p>;
@@ -21,6 +23,12 @@ export function ProductDetails() {
             {product.price_cents.toLocaleString()} kr.
           </p>
           <p className="text-gray-700 leading-relaxed">{product.description}</p>
+          <button
+            className="border px-3 py-2 rounded bg-orange-400 hover:shadow-lg transition"
+            onClick={() => addToCart(product)}
+          >
+            Add to Cart
+          </button>
         </div>
       </div>
     </div>

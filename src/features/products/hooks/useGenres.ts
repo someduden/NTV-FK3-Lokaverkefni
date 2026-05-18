@@ -1,4 +1,4 @@
-import { getGenres } from '@/lib/getGenre';
+import { getGenres } from '@/features/products/API/getGenre';
 import { useQuery } from '@tanstack/react-query';
 
 export function useGenres() {

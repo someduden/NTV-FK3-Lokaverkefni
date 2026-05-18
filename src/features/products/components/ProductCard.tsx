@@ -1,6 +1,7 @@
-import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/shared/components/ui/card';
 import type { Product } from '../model/product';
 import { Link } from 'react-router';
+import { useCart } from '@/features/cart/hooks/useCart';
 
 type ProductCardProps = {
   product: Product;
@@ -9,11 +10,25 @@ type ProductCardProps = {
 export function ProductCard({ product }: ProductCardProps) {
   return (
     <Link to={`/recipes/${product.id}`}>
-      <Card>
-        <CardHeader>{product.Genre}</CardHeader>
-        <CardTitle>{product.name}</CardTitle>
-        <img src={product.image_url} className="w-50 h-50"></img>
-        <CardFooter>{product.price_cents} ISK</CardFooter>
+      <Card className="h-80 flex flex-col hover:shadow-lg transition">
+        <CardHeader>
+          <p className="text-xs text-muted-foreground">{product.Genre}</p>
+          <h3 className="font-medium line-clamp-2">{product.name}</h3>
+        </CardHeader>
+
+        <CardContent className="flex-1 flex items-center justify-center">
+          <img
+            src={product.image_url}
+            alt={product.name}
+            className="h-40 object-contain"
+          />
+        </CardContent>
+
+        <div className="p-4 pt-0">
+          <p className="font-semibold">
+            {product.price_cents.toLocaleString()} kr.
+          </p>
+        </div>
       </Card>
     </Link>
   );

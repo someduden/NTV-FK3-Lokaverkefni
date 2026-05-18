@@ -15,7 +15,7 @@ export function NavBar() {
             )
           }
         >
-          Products
+          <button className="border px-3 py-2 rounded">Products</button>
         </NavLink>
       </div>
     </nav>
