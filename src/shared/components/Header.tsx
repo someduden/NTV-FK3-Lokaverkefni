@@ -5,6 +5,7 @@ import { useCart } from '@/features/cart/hooks/useCart';
 import { NavBar } from '@/features/navigation/components/NavBar';
 import { useState } from 'react';
 import { FaShoppingCart } from 'react-icons/fa';
+import { Link } from 'react-router';
 
 export function Header() {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -21,13 +22,23 @@ export function Header() {
   return (
     <div className="w-full">
       <header className="bg-white shadow-md p-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-orange-400">Readioactive</h1>
+        <Link to="/">
+          <h1 className="text-2xl font-bold text-orange-400">Readioactive</h1>
+        </Link>
 
         <div className="flex gap-3">
           {user ? (
-            <button onClick={signOut}>Logout</button>
+            <button
+              className="cursor-pointer text-gray-500 hover:text-gray-900"
+              onClick={signOut}
+            >
+              Logout
+            </button>
           ) : (
-            <button onClick={() => setShowAuthModal(true)}>
+            <button
+              className="cursor-pointer text-gray-500 hover:text-gray-900"
+              onClick={() => setShowAuthModal(true)}
+            >
               Sign up / Log in
             </button>
           )}
@@ -84,10 +95,19 @@ export function Header() {
                         <span>{total} kr.</span>
                       </div>
 
+                      {/* ! MAKE THESE BUTTONS GO TO THEIR RESPECTIVE PLACES ! */}
+                      <div className="mt-2 flex flex-col gap-1.5">
+                        <button className="w-full bg-amber-500 text-white py-1 rounded transition hover:bg-amber-600">
+                          View cart
+                        </button>
+                        <button className="w-full bg-amber-500 text-white py-1 rounded transition hover:bg-amber-600">
+                          Checkout
+                        </button>
+                      </div>
+
                       <button
                         onClick={clearCart}
-                        className="mt-3 w-full bg-red-500 text-white py-1 rounded transition hover:bg-red-600
-                  "
+                        className="mt-2 w-full bg-red-500 text-white py-1 rounded transition hover:bg-red-600"
                       >
                         Clear Cart
                       </button>

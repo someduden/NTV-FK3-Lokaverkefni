@@ -1,7 +1,6 @@
 import { Card, CardContent, CardHeader } from '@/shared/components/ui/card';
 import type { Product } from '../model/product';
 import { Link } from 'react-router';
-import { useCart } from '@/features/cart/hooks/useCart';
 
 type ProductCardProps = {
   product: Product;
@@ -9,7 +8,7 @@ type ProductCardProps = {
 
 export function ProductCard({ product }: ProductCardProps) {
   return (
-    <Link to={`/recipes/${product.id}`}>
+    <Link to={`/product/${product.id}`}>
       <Card className="h-80 flex flex-col hover:shadow-lg transition">
         <CardHeader>
           <p className="text-xs text-muted-foreground">{product.Genre}</p>

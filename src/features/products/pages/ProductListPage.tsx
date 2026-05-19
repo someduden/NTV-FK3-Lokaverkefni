@@ -15,25 +15,26 @@ export function ProductListPage() {
     return () => clearTimeout(timeout);
   }, [searchInput]);
 
+  const { data: genres = [] } = useGenres();
+  const [genre, setGenre] = useState('');
+
   const {
     data: products,
     isLoading,
     error,
   } = useProducts({
     search,
+    genre,
   });
-
-  const { data: genres = [] } = useGenres();
-  const [genre, setGenre] = useState('');
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <p>Error loading products</p>;
 
   return (
     <div className="flex">
-      <div className="flex flex-col gap-4 justify-center">
+      <div className="grid gap-4 justify-center">
         <h2 className="text-black p-4">Manga</h2>
-        <div className="flex gap-4">
+        <div className="grid grid-cols-4 gap-4">
           {products?.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
@@ -41,7 +42,7 @@ export function ProductListPage() {
       </div>
 
       {/* FILTERAR OG DRASL HÉR */}
-      <div className="flex flex-col gap-4 p-5">
+      <div className="flex flex-col gap-4 p-5 pt-18">
         <input
           type="text"
           placeholder="Search products..."

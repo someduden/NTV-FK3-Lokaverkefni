@@ -6,7 +6,7 @@ export function NavBar() {
     <nav>
       <div>
         <NavLink
-          to="/"
+          to="/products"
           end
           className={({ isActive }) =>
             cn(
@@ -15,7 +15,7 @@ export function NavBar() {
             )
           }
         >
-          <button className="border px-3 py-2 rounded">Products</button>
+          <button className="border px-3 py-2 rounded">Manga</button>
         </NavLink>
       </div>
     </nav>
