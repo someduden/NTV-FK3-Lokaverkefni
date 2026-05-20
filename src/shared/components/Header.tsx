@@ -97,9 +97,11 @@ export function Header() {
 
                       {/* ! MAKE THESE BUTTONS GO TO THEIR RESPECTIVE PLACES ! */}
                       <div className="mt-2 flex flex-col gap-1.5">
-                        <button className="w-full bg-amber-500 text-white py-1 rounded transition hover:bg-amber-600">
-                          View cart
-                        </button>
+                        <Link to="/cart">
+                          <button className="w-full bg-amber-500 text-white py-1 rounded transition hover:bg-amber-600">
+                            View cart
+                          </button>
+                        </Link>
                         <button className="w-full bg-amber-500 text-white py-1 rounded transition hover:bg-amber-600">
                           Checkout
                         </button>
