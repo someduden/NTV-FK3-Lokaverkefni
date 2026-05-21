@@ -18,7 +18,11 @@ export async function getCart(user: any) {
   return data;
 }
 
-export async function addToCartDB(user: any, productId: string) {
+export async function addToCartDB(
+  user: any,
+  productId: string,
+  quantity: number = 1,
+) {
   const customer = await getOrCreateCustomer(user);
 
   const cart = await getOrCreateCart(customer.id);
@@ -37,7 +41,7 @@ export async function addToCartDB(user: any, productId: string) {
   if (existing) {
     const { error } = await supabase
       .from('cart_items')
-      .update({ quantity: existing.quantity + 1 })
+      .update({ quantity: existing.quantity + quantity })
       .eq('id', existing.id);
 
     if (error) {
@@ -47,7 +51,7 @@ export async function addToCartDB(user: any, productId: string) {
     const { error } = await supabase.from('cart_items').insert({
       cart_id: cart.id,
       product_id: productId,
-      quantity: 1,
+      quantity,
     });
 
     if (error) {
@@ -64,8 +68,8 @@ export async function removeFromCartDB(id: string) {
   }
 }
 
-export async function clearCartDB(userId: string) {
-  const customer = await getOrCreateCustomer(userId);
+export async function clearCartDB(user: any) {
+  const customer = await getOrCreateCustomer(user);
   const cart = await getOrCreateCart(customer.id);
 
   const { error } = await supabase

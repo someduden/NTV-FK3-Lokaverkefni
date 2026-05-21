@@ -1,8 +1,9 @@
+import type { CartItem } from '@/features/cart/model/cart';
 import { getOrCreateCart } from '@/features/cart/utils/getOrCreateCart';
 import { getOrCreateCustomer } from '@/features/cart/utils/getOrCreateCustomer';
 import { supabase } from '@/lib/supabaseClient';
 
-export async function createOrder(user: any, items: any[]) {
+export async function createOrder(user: any, items: CartItem[]) {
   const customer = await getOrCreateCustomer(user);
   const cart = await getOrCreateCart(customer.id);
 
@@ -38,7 +39,7 @@ export async function createOrder(user: any, items: any[]) {
     product_name: item.product.name,
     unit_price_cents: item.product.price_cents,
     quantity: item.quantity,
-    line_total_cents: subtotal_cents,
+    line_total_cents: item.product.price_cents * item.quantity,
     product_id: item.product.id,
   }));
 

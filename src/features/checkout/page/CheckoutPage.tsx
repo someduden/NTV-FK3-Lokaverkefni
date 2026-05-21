@@ -29,6 +29,17 @@ export function CheckoutPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+
+    if (!user) {
+      alert('You must be logged in');
+      return;
+    }
+
+    handleCheckout();
+  }
+
   async function handleCheckout() {
     if (!user) {
       alert('You must be logged in');
@@ -39,6 +50,8 @@ export function CheckoutPage() {
 
     try {
       await createOrder(user, items);
+
+      clearCart();
 
       setSuccess(true);
     } catch (err) {
@@ -63,53 +76,60 @@ export function CheckoutPage() {
       <div>
         <h2 className="text-2xl font-bold mb-6">Checkout</h2>
         <div className="space-y-4">
-          <input
-            name="name"
-            placeholder="Full Name"
-            onChange={handleChange}
-            className="w-full border p-3 rounded"
-          />
-          <input
-            name="email"
-            placeholder="Email"
-            onChange={handleChange}
-            className="w-full border p-3 rounded"
-          />
-          <input
-            name="address"
-            placeholder="Address"
-            onChange={handleChange}
-            className="w-full border p-3 rounded"
-          />
-          <input
-            name="city"
-            placeholder="City"
-            onChange={handleChange}
-            className="w-full border p-3 rounded"
-          />
-          <input
-            name="zip"
-            placeholder="ZIP Code"
-            onChange={handleChange}
-            className="w-full border p-3 rounded"
-          />
-        </div>
+          <form onSubmit={handleSubmit}>
+            <input
+              name="name"
+              placeholder="Full Name"
+              onChange={handleChange}
+              className="w-full border p-3 rounded"
+              required
+            />
+            <input
+              name="email"
+              placeholder="Email"
+              onChange={handleChange}
+              className="w-full border p-3 rounded"
+              required
+            />
+            <input
+              name="address"
+              placeholder="Address"
+              onChange={handleChange}
+              className="w-full border p-3 rounded"
+              required
+            />
+            <input
+              name="city"
+              placeholder="City"
+              onChange={handleChange}
+              className="w-full border p-3 rounded"
+              required
+            />
+            <input
+              name="zip"
+              placeholder="ZIP Code"
+              onChange={handleChange}
+              className="w-full border p-3 rounded"
+              required
+            />
 
-        <div className="mt-8">
-          <h3 className="font-semibold mb-2">Payment</h3>
-          <div className="border p-4 rounded bg-gray-50 text-sm text-gray-600">
-            This is a demo checkout. No real payment will be processed.
-          </div>
-        </div>
+            <div className="mt-8">
+              <h3 className="font-semibold mb-2">Payment</h3>
+              <div className="border p-4 rounded bg-gray-50 text-sm text-gray-600">
+                This is a demo checkout. No real payment will be processed.
+              </div>
+            </div>
 
-        <Button
-          variant="secondary"
-          onClick={handleCheckout}
-          disabled={loading || items.length === 0}
-          className="mt-6 w-full bg-black text-white py-3 rounded hover:opacity-90"
-        >
-          {loading ? 'Processing...' : `Pay ${total.toLocaleString()} kr.`}
-        </Button>
+            <Button
+              variant="secondary"
+              type="submit"
+              disabled={loading || items.length === 0}
+              className="mt-6 w-full bg-black text-white py-3 rounded hover:opacity-90"
+            >
+              {loading ? 'Processing...' : `Pay ${total.toLocaleString()} kr.`}
+            </Button>
+          </form>
+        </div>
       </div>
 
       <div className="space-y-4">

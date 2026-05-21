@@ -28,49 +28,57 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();
 
   useEffect(() => {
-    if (!user) {
-      localStorage.setItem('cart', JSON.stringify(items));
-    }
-  }, [items, user]);
-
-  useEffect(() => {
     if (!user) return;
 
+    async function initCart() {
+      await syncLocalCartToDB(user);
+
+      if (!user) return;
+      const data = await getCart(user);
+
+      setItems(
+        data.map((item: any) => ({
+          id: item.id,
+          product: item.product,
+          quantity: item.quantity,
+        })),
+      );
+    }
+
+    initCart();
+  }, [user]);
+
+  async function syncLocalCartToDB(user: any) {
     const local = localStorage.getItem('cart');
     if (!local) return;
 
     const parsed = JSON.parse(local);
 
-    parsed.forEach(async (item: any) => {
-      await addToCartDB(user, item.product.id);
-    });
+    await Promise.all(
+      parsed.map((item: any) =>
+        addToCartDB(user, item.product.id, item.quantity),
+      ),
+    );
+  }
 
-    localStorage.removeItem('cart');
-  }, [user]);
-
-  useEffect(() => {
+  async function refreshCart() {
     if (!user) return;
 
-    const userId = user.id;
+    const data = await getCart(user);
 
-    async function loadCart() {
-      const data = await getCart(userId);
-
-      const formatted = data.map((item: any) => ({
+    setItems(
+      data.map((item: any) => ({
         id: item.id,
         product: item.product,
         quantity: item.quantity,
-      }));
-
-      setItems(formatted);
-    }
-
-    loadCart();
-  }, [user]);
+      })),
+    );
+  }
 
   async function addToCart(product: Product) {
     if (user) {
       await addToCartDB(user, product.id);
+      await refreshCart();
 
       const updated = await getCart(user);
 
@@ -83,17 +91,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       );
     } else {
       setItems((prev) => {
-        const existing = prev.find((item) => item.product.id === product.id);
+        const existing = prev.find((i) => i.product.id === product.id);
 
-        if (existing) {
-          return prev.map((i) =>
-            i.product.id === product.id
-              ? { ...i, quantity: i.quantity + 1 }
-              : i,
-          );
-        }
+        const updated = existing
+          ? prev.map((i) =>
+              i.product.id === product.id
+                ? { ...i, quantity: i.quantity + 1 }
+                : i,
+            )
+          : [...prev, { product, quantity: 1 }];
 
-        return [...prev, { product, quantity: 1 }];
+        localStorage.setItem('cart', JSON.stringify(updated));
+
+        return updated;
       });
     }
   }
@@ -139,18 +149,33 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       if (!item?.id) return;
 
       await removeFromCartDB(item.id);
+      await refreshCart();
 
-      setItems((prev) => prev.filter((i) => i.product.id !== productId));
+      const updated = await getCart(user);
+      setItems(
+        updated.map((item: any) => ({
+          id: item.id,
+          product: item.product,
+          quantity: item.quantity,
+        })),
+      );
     } else {
-      setItems((prev) => prev.filter((i) => i.product.id !== productId));
+      const updated = items.filter((i) => i.product.id !== productId);
+
+      setItems(updated);
+      localStorage.setItem('cart', JSON.stringify(updated));
     }
   }
 
   async function clearCart() {
     if (user) {
-      await clearCartDB(user.id);
+      await clearCartDB(user);
+      await refreshCart();
     }
+
     setItems([]);
+
+    localStorage.removeItem('cart');
   }
 
   return (
