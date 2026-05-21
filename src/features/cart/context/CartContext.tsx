@@ -13,6 +13,7 @@ type CartContextType = {
   items: CartItem[];
   addToCart: (product: Product) => void;
   removeFromCart: (productId: string) => void;
+  updateQuantity: (productId: string, change: number) => void;
   clearCart: () => void;
 };
 
@@ -97,6 +98,41 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  async function updateQuantity(productId: string, change: number) {
+    if (user) {
+      const item = items.find((i) => i.product.id === productId);
+
+      if (!item) return;
+
+      const newQuantity = item.quantity + change;
+
+      if (newQuantity <= 0) {
+        if (!item?.id) return;
+        await removeFromCartDB(item.id);
+
+        setItems((prev) => prev.filter((i) => i.product.id !== productId));
+
+        return;
+      }
+
+      setItems((prev) =>
+        prev.map((i) =>
+          i.product.id === productId ? { ...i, quantity: newQuantity } : i,
+        ),
+      );
+    } else {
+      setItems((prev) =>
+        prev
+          .map((i) =>
+            i.product.id === productId
+              ? { ...i, quantity: i.quantity + change }
+              : i,
+          )
+          .filter((i) => i.quantity > 0),
+      );
+    }
+  }
+
   async function removeFromCart(productId: string) {
     if (user) {
       const item = items.find((i) => i.product.id === productId);
@@ -119,7 +155,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <CartContext.Provider
-      value={{ items, addToCart, removeFromCart, clearCart }}
+      value={{ items, addToCart, removeFromCart, updateQuantity, clearCart }}
     >
       {children}
     </CartContext.Provider>

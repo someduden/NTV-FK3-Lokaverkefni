@@ -5,9 +5,11 @@ import { useCart } from '@/features/cart/hooks/useCart';
 import { NavBar } from '@/features/navigation/components/NavBar';
 import { useState } from 'react';
 import { FaShoppingCart } from 'react-icons/fa';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 export function Header() {
+  const navigate = useNavigate();
+
   const [showDropdown, setShowDropdown] = useState(false);
   const { items, removeFromCart, clearCart } = useCart();
 
@@ -102,7 +104,10 @@ export function Header() {
                             View cart
                           </button>
                         </Link>
-                        <button className="w-full bg-amber-500 text-white py-1 rounded transition hover:bg-amber-600">
+                        <button
+                          className="w-full bg-amber-500 text-white py-1 rounded transition hover:bg-amber-600"
+                          onClick={() => navigate('/checkout')}
+                        >
                           Checkout
                         </button>
                       </div>
