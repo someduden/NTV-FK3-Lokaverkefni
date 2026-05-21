@@ -44,6 +44,14 @@ export function Header() {
               Sign up / Log in
             </button>
           )}
+
+          <button
+            className="cursor-pointer text-gray-500 hover:text-gray-900"
+            onClick={() => navigate('/orders')}
+          >
+            Orders
+          </button>
+
           <div className="relative">
             <button
               className="cursor-pointer"
@@ -99,11 +107,13 @@ export function Header() {
 
                       {/* ! MAKE THESE BUTTONS GO TO THEIR RESPECTIVE PLACES ! */}
                       <div className="mt-2 flex flex-col gap-1.5">
-                        <Link to="/cart">
-                          <button className="w-full bg-amber-500 text-white py-1 rounded transition hover:bg-amber-600">
-                            View cart
-                          </button>
-                        </Link>
+                        <button
+                          className="w-full bg-amber-500 text-white py-1 rounded transition hover:bg-amber-600"
+                          onClick={() => navigate('/cart')}
+                        >
+                          View cart
+                        </button>
+
                         <button
                           className="w-full bg-amber-500 text-white py-1 rounded transition hover:bg-amber-600"
                           onClick={() => navigate('/checkout')}

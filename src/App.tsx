@@ -6,6 +6,8 @@ import { ProductDetails } from './features/products/components/ProductDetails';
 import { HomePage } from './features/shell/pages/HomePage';
 import { CartPage } from './features/cart/pages/CartPage';
 import { CheckoutPage } from './features/checkout/page/CheckoutPage';
+import { OrderHistory } from './features/orders/pages/OrderHistory';
+import { OrderDetails } from './features/orders/pages/OrderDetails';
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/orders" element={<OrderHistory />} />
+        <Route path="/orders/:id" element={<OrderDetails />} />
       </Route>
     </Routes>
   );
