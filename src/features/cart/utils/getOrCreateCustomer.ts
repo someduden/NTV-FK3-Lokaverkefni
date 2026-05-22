@@ -1,8 +1,6 @@
 import { supabase } from '@/lib/supabaseClient';
 
 export async function getOrCreateCustomer(user: any) {
-  console.log('USER:', user);
-
   const { data: existing } = await supabase
     .from('shop_customers')
     .select('*')
