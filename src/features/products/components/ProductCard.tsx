@@ -11,7 +11,7 @@ export function ProductCard({ product }: ProductCardProps) {
     <Link to={`/product/${product.id}`}>
       <Card className="h-80 flex flex-col hover:shadow-lg transition">
         <CardHeader>
-          <p className="text-xs text-muted-foreground">{product.Genre}</p>
+          <p className="text-xs text-muted-foreground">{product.genre}</p>
           <h3 className="font-medium line-clamp-2">{product.name}</h3>
         </CardHeader>
 

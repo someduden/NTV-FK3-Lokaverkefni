@@ -18,7 +18,7 @@ export async function getProducts(
   }
 
   if (filters.genre) {
-    query = query.eq('Genre', filters.genre);
+    query = query.eq('genre', filters.genre);
   }
 
   const { data, error } = await query;
