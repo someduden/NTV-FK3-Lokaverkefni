@@ -1,3 +1,8 @@
+type Cart = {
+  id: string;
+  user_id: string;
+};
+
 type CartItem = {
   id: string;
   cart_id: string;
@@ -5,6 +10,7 @@ type CartItem = {
   quantity: number;
 };
 
+let carts: Cart[] = [];
 let cartItems: CartItem[] = [];
 
 export const resetDb = () => {
@@ -12,6 +18,29 @@ export const resetDb = () => {
 };
 
 export const fakeDb = {
+  carts: {
+    find: (filters: Partial<Cart>) =>
+      carts.filter((cart) =>
+        Object.entries(filters).every(
+          ([key, value]) => cart[key as keyof Cart] === value,
+        ),
+      ),
+
+    findOne: (filters: Partial<Cart>) =>
+      carts.find((cart) =>
+        Object.entries(filters).every(
+          ([key, value]) => cart[key as keyof Cart] === value,
+        ),
+      ) || null,
+
+    insert: (cart: Cart) => {
+      carts.push(cart);
+      return cart;
+    },
+
+    all: () => carts,
+  },
+  
   cart_items: {
     find(filters: Record<string, any>) {
       const rows = this.all();
