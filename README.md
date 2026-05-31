@@ -13,7 +13,7 @@ This project demonstrates a complete shopping flow including products, cart, ord
 🚀 Getting Started
 
 1. Clone the repo
-   git clone https://github.com/your-username/your-repo.git
+   git clone https://github.com/someduden/NTV-FK3-Lokaverkefni
    cd your-repo
 2. Install dependencies
    npm install
